@@ -25,7 +25,7 @@ int findGreatest(int array[],int n){
 }
 
 int main(void){
-    int array[10]  =   {2,2,2,2,2,2,2,2,2,2};
+    int array[10]  =   {2,2,2,2,2,2,2,2,2,10};
     size_t n = sizeof(array)/sizeof(int);
     int indice = findGreatest(array,n);
     printf("%d - %d \n",indice,nComp);
