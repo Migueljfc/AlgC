@@ -5,11 +5,10 @@ unsigned int nComp = 0;
 int isArith(int a[], int n){
     assert(n>1);
     for(int i = 0;i < n-1; i++){
+        nComp++;
         if(a[i+1]-a[i] != 1){
-            nComp++;
             return 0;
         }
-        nComp++;
 
     }
     return 1;
