@@ -1,5 +1,6 @@
-//NMEC: 93091
-//NOME: Miguel José Ferreira Cabral
+// SELLECT ALL AND PASTE YOUR SOLUTION HERE!
+//NMEC: ...
+//NOME: ...
 
 // Complete the functions (marked by ...)
 // so that it passes all tests in DateTimeTest.
@@ -13,28 +14,23 @@
 // You may add auxiliary definitions and declarations here, if you need to.
 
 
+
 // Check if given arguments would form a valid DateTime.
 // A DateTime is valid iff both the date part and the time part are valid.
 int DateTimeIsValid(int yy, int mm, int dd, int h, int m, int s) {
-  return (DateIsValid(yy,mm,dd) && TimeIsValid(h,m,s));
+  return ...
 }
 
 // Allocate an initialize a DateTime instance.
 // Return the pointer to the created instance or NULL if an error occurs.
 DateTime* DateTimeCreate(int yy, int mm, int dd, int h, int m, int s) {
   assert(DateTimeIsValid(yy, mm, dd, h, m, s));
-  DateTime* dt = (DateTime*) malloc(sizeof(*dt));
-  if(dt == NULL) return dt;
-  Date* d = DateCreate(yy,mm,dd);
-  Time t = TimeCreate(h,m,s);
-  dt->date = *d;
-  dt -> time = t;
-  return dt;
+  ...
+  
 }
 
 // Free a DateTime instance and invalidate its pointer.
 void DateTimeDestroy(DateTime **pdt) {
-  assert(*pdt != NULL);
   free(*pdt);
   *pdt = NULL;
 }
@@ -43,10 +39,8 @@ void DateTimeDestroy(DateTime **pdt) {
 // Return an integer >0 if a>b, 0 if a==b and <0 if a<b.
 int DateTimeCompare(DateTime *a, DateTime *b) {
   // KEEP IT SIMPLE.  Call the compare functions in Date and Time!
-  if(DateCompare(&a->date,&b->date) == 0){
-    return(TimeCompare(a->time,b->time));
-  }
-  return (DateCompare((Date*)a,(Date*)b));
+  ...
+  return ...
 }
 
 // Temporary buffer for DateTimeFormat output.

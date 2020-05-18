@@ -1,5 +1,5 @@
-//NMEC: ...
-//NOME: ...
+//NMEC: 93091
+//NOME: Miguel José Ferreira Cabral
 //
 // Joaquim Madeira, AlgC, April 2020
 // João Manuel Rodrigues, AlgC, May 2020
@@ -125,8 +125,10 @@ void ListMove(List* l, int newPos) {
     l->current = l->tail;
   } else {  // move to an inner node
     // Start at head (or current position) and move forward until newPos.
-    //...
-    
+    l->current = l->head;
+    for(int i = 0;i < newPos;i++){
+      l->current = l->current->next;
+    }
   }
   l->currentPos = newPos;
 }
@@ -152,9 +154,16 @@ void ListMoveToTail(List* l) { ListMove(l, l->size - 1); }
 // If search fails. return -1 and don't change the current node.
 // (Try to optimize the search to start at the current node if possible.)
 int ListSearch(List* l, const void* p) {
-  //...
-  
-  return 0;
+  struct _ListNode* n = l->head;
+  for(int i = 0;i < l->size;i++){
+    if(l->compare(p,n->item)==0){
+      l->current = n;
+      l->currentPos = i;
+      return 0;
+    }
+    n = n->next;
+  }
+  return -1;
 }
 
 // You may add extra definitions here.
@@ -269,9 +278,16 @@ void* ListRemoveCurrent(List* l) {
   else if (l->currentPos == l->size - 1)
     item = ListRemoveTail(l);
   else {
-    // find node before current, change its next field,
-    // free current, change current, change size
-    //...
+    int i = 0;
+    while (i < l->currentPos - 1)
+    {
+      l->head = l->head->next;
+    }
+    l->head->next = l->current->next;
+    free(l->current);
+    l->current = l->head->next;
+    l->currentPos = i;
+    l->size--;
     
   }
   return item;

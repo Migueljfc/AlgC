@@ -1,5 +1,6 @@
-//NMEC: 93091
-//NOME: Miguel José Ferreira Cabral
+// SELLECT ALL AND PASTE YOUR SOLUTION HERE!
+//NMEC: ...
+//NOME: ...
 
 // Complete the functions (marked by ...)
 // so that it passes all tests in DateTimeTest.
@@ -28,13 +29,13 @@ static int invariant(TimeInterval *ti) {
 // but the ID must be copied.
 TimeInterval* TimeIntervalCreate(DateTime *t1, DateTime *t2, const char *id) {
   // Fill in the required precondition.
-  assert (t1 != NULL && t2 != NULL);
+  assert ( ... );
   TimeInterval* ti = (TimeInterval*)malloc(sizeof *ti);
   if (ti != NULL) {
-    ti->start = t1;
-    ti->end = t2;
+    ti->... = t1;
+    ti->... = t2;
     // Create a copy of the id string! Use malloc+strcpy or strdup.
-    ti->id = strdup(id);
+    ti->id = ...
     
   }
   assert (invariant(ti));  // the invariant must be ensured here!
@@ -46,8 +47,8 @@ TimeInterval* TimeIntervalCreate(DateTime *t1, DateTime *t2, const char *id) {
 // (*pti)->start and (*pti)->end should be left untouched.
 void TimeIntervalDestroy(TimeInterval **pti) {
   assert (*pti != NULL);
-  free((*pti)->id);  // Free the id field memory
-  free(*pti);  // Free the TimeInterval structure memory
+  free(...)  // Free the id field memory
+  free(...)  // Free the TimeInterval structure memory
   *pti = NULL;
 }
 
@@ -58,13 +59,7 @@ void TimeIntervalDestroy(TimeInterval **pti) {
 // NOTE: this does not establish a total order!
 // Result=0 does not imply that *ti1 and *ti2 are equal.
 int TimeIntervalCompare(TimeInterval *ti1, TimeInterval *ti2) {
-  if(DateTimeCompare(ti1->end,ti2->start) <= 0) {
-    return -1;
-  }
-  if(DateTimeCompare(ti2->end,ti1->start)<= 0){
-    return 1;
-  }
-  return 0;
+  ...
   
 }
 
@@ -75,7 +70,7 @@ int TimeIntervalOverlaps(TimeInterval *ti1, TimeInterval *ti2) {
 
 // Return true (1) if interval *ti1 contains *ti2, false otherwise.
 int TimeIntervalContains(TimeInterval *ti1, TimeInterval *ti2) {
-   return ((DateTimeCompare(ti1->start,ti2->start)<=0 && DateTimeCompare(ti1->end,ti2->end)>0) || (DateTimeCompare(ti2->start,ti1->start)<=0 && DateTimeCompare(ti2->end,ti1->end)>0));
+  ...
   
 }
 
