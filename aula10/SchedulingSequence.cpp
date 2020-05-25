@@ -1,5 +1,5 @@
-//NMEC: ...
-//NOME: ...
+//NMEC: 93091
+//NOME: Miguel José Ferreira Cabral 
 //
 // João Manuel Rodrigues, AlgC, May 2020
 // Joaquim Madeira, AlgC, May 2020
@@ -35,6 +35,12 @@ SchedulingSequence *SchedulingSequenceCreate(int capacity) {
   assert(capacity >= 0);
   // You must allocate space for the struct and create an empty intervals list!
   // ...
+  SchedulingSequence* s = (SchedulingSequence*)malloc(sizeof(s));
+  if(s == NULL) return s;
+  s->size = 0;
+  s->intervals = (BSTree*)malloc(sizeof(BSTree*));
+  s->intervals = BSTreeCreate(cmpTI,printTI);
+  return s;
   
 }
 
@@ -42,6 +48,9 @@ SchedulingSequence *SchedulingSequenceCreate(int capacity) {
 void SchedulingSequenceDestroy(SchedulingSequence **pss) {
   assert(*pss != NULL);
   // ...
+  BSTreeDestroy(&(*pss)->intervals);
+  free(*pss);
+  pss = NULL;
   
 }
 
@@ -57,6 +66,19 @@ int SchedulingSequenceIsFull(SchedulingSequence *ss) {
 int SchedulingSequenceAdd(SchedulingSequence *ss, TimeInterval *ti) {
   assert(!SchedulingSequenceIsFull(ss));
   // ...
+  for(int i = 0;i < ss->size; i++){
+    TimeInterval * t2 = (TimeInterval*) BSTreeGetKthItem(ss->intervals,i);
+    if(TimeIntervalOverlaps(ti,t2) || ti == t2){
+      return 0;
+    }
+  }
+  if(BSTreeAdd(ss->intervals,ti)){
+    ss->size++;
+    return 1;
+  }
+  
+  return 0;
+  
   
 }
 
@@ -65,7 +87,7 @@ int SchedulingSequenceAdd(SchedulingSequence *ss, TimeInterval *ti) {
 // Precondition: 0 <= idx < ss->size.
 TimeInterval *SchedulingSequenceGet(SchedulingSequence *ss, int idx) {
   assert(0 <= idx && idx < ss->size);
-  // ...
+  return (TimeInterval*)BSTreeGetKthItem(ss->intervals,idx);
   
 }
 
@@ -74,9 +96,10 @@ TimeInterval *SchedulingSequenceGet(SchedulingSequence *ss, int idx) {
 // Precondition: 0 <= idx < ss->size.
 TimeInterval *SchedulingSequencePop(SchedulingSequence *ss, int idx) {
   assert(0 <= idx && idx < ss->size);
-  // This implies !SchedulingSequenceIsEmpty(ss).
-  // ...
-  
+  TimeInterval* t = (TimeInterval* )BSTreeGetKthItem(ss->intervals,idx);
+  BSTreeRemoveKthItem(ss->intervals,idx);
+  ss->size--;
+  return t;
 }
 
 // You may add auxiliary definitions and declarations here, if you need to.

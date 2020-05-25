@@ -1,6 +1,6 @@
 // SELLECT ALL AND PASTE YOUR SOLUTION HERE!
-//NMEC: ...
-//NOME: ...
+//NMEC: 93091
+//NOME: Miguel José Ferreira Cabral
 
 // Complete the functions (marked by ...)
 // so that it passes all tests in DateTimeTest.
@@ -29,14 +29,14 @@ static int invariant(TimeInterval *ti) {
 // but the ID must be copied.
 TimeInterval* TimeIntervalCreate(DateTime *t1, DateTime *t2, const char *id) {
   // Fill in the required precondition.
-  assert ( ... );
+  assert (  DateTimeCompare(t1,t2) <= 0 );
   TimeInterval* ti = (TimeInterval*)malloc(sizeof *ti);
   if (ti != NULL) {
-    ti->... = t1;
-    ti->... = t2;
+    ti->start = t1;
+    ti->end = t2;
     // Create a copy of the id string! Use malloc+strcpy or strdup.
-    ti->id = ...
-    
+    char* msg = strdup(id);
+    ti->id = msg;
   }
   assert (invariant(ti));  // the invariant must be ensured here!
   return ti;
@@ -47,8 +47,8 @@ TimeInterval* TimeIntervalCreate(DateTime *t1, DateTime *t2, const char *id) {
 // (*pti)->start and (*pti)->end should be left untouched.
 void TimeIntervalDestroy(TimeInterval **pti) {
   assert (*pti != NULL);
-  free(...)  // Free the id field memory
-  free(...)  // Free the TimeInterval structure memory
+  free((*pti)->id);  // Free the id field memory
+  free(*pti);  // Free the TimeInterval structure memory
   *pti = NULL;
 }
 
@@ -59,7 +59,20 @@ void TimeIntervalDestroy(TimeInterval **pti) {
 // NOTE: this does not establish a total order!
 // Result=0 does not imply that *ti1 and *ti2 are equal.
 int TimeIntervalCompare(TimeInterval *ti1, TimeInterval *ti2) {
-  ...
+  DateTime* d1 = (DateTime*) ti1->start;
+  DateTime* d2 = (DateTime*) ti2->start;
+  DateTime* d3 = (DateTime*) ti1->end;
+  DateTime* d4 = (DateTime*) ti2->end;
+
+  if(DateTimeCompare(d1,d2) == 0 && DateTimeCompare(d3,d4)) {
+    return 0;
+  } 
+  if(DateTimeCompare(d3,d2) <= 0) {
+    return -1;
+  } 
+  if(DateTimeCompare(d1,d4) >= 0){
+    return 1;
+  }
   
 }
 
@@ -70,7 +83,7 @@ int TimeIntervalOverlaps(TimeInterval *ti1, TimeInterval *ti2) {
 
 // Return true (1) if interval *ti1 contains *ti2, false otherwise.
 int TimeIntervalContains(TimeInterval *ti1, TimeInterval *ti2) {
-  ...
+  return DateTimeCompare(ti1->start, ti2->start) <= 0 && DateTimeCompare(ti1->end, ti2->end) >= 0;
   
 }
 

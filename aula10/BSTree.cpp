@@ -1,5 +1,5 @@
-//NMEC: ...
-//NOME: ...
+//NMEC: 93091
+//NOME: Miguel José Ferreira Cabral
 //
 // Joaquim Madeira, AlgC, May 2020
 // João Manuel Rodrigues, AlgC, May 2020
@@ -53,10 +53,11 @@ static void _treeDestroy(struct _BSTreeNode** pRoot) {
   *pRoot = NULL;  
 }
 // Q: What kind of tree traversal is this function doing?
-// Breadth-first or Depth-first?        A: ...
-// Pre-order, In-order or Post-order?   A: ...
+// Breadth-first or Depth-first?        A: Depth-first
+// Pre-order, In-order or Post-order?   A: Post-order
 // Is this the best order here? Why?
-// A: ...
+// A: Sim pois ao começar pelas folhas garante que essas sejam eliminadas primeiramente, 
+// e quando se passa para os restantes , na sua eliminação está garantido que são folhas
 
 void BSTreeDestroy(BSTree** pHeader) {
   BSTree* header = *pHeader;
@@ -84,9 +85,23 @@ unsigned int BSTreeGetNumberOfNodes(const BSTree* header) {
 // Determina a altura da (sub)árvore que nasce no nó root.
 // (Função interna, que é usada por BSTreeGetHeight.)
 static int _treeGetHeight(const struct _BSTreeNode* root) {
-  // Complete a função
-  // ...
-  return ...;
+  int leftH,rightH; //subárvore esquerda e direita
+  if(root == NULL){
+    return -1;
+  }
+  
+    leftH = _treeGetHeight(root->left);
+    rightH = _treeGetHeight(root->right);
+
+    if(leftH > rightH){
+      return leftH + 1;
+    }
+    
+    return rightH + 1;
+    
+
+
+  
 }
 
 // Devolve a altura da árvore.
@@ -102,20 +117,21 @@ int BSTreeGetHeight(const BSTree* header) {
 void* BSTreeGetMin(const BSTree* header) {
   assert(header != NULL);
   assert(!BSTreeIsEmpty(header));
-
-  // Complete a função com uma solução ITERATIVA.
-  // ...
-  return ...
+  struct _BSTreeNode* b = header->root;
+  while(b->left != NULL){
+    b = b->left;
+  }
+  return b->item;
 }
 
 // Acha e devolve o maior item da (sub)árvore que nasce no nó root.
 // (Função interna invocada em BSTreeGetMax.)
 static void* _treeGetMax(const struct _BSTreeNode* root) {
   assert(root != NULL);
-
-  // Complete a função com uma solução RECURSIVA.
-  // ...
-  
+  if(root->right == NULL){
+    return root->item;
+  }
+  return _treeGetMax(root->right);
 }
 
 // Acha e devolve o maior item da árvore.
@@ -133,11 +149,18 @@ int BSTreeContains(const BSTree* header, const void* item) {
 
   struct _BSTreeNode* root = header->root;
   while (root != NULL) {
-    // Complete o corpo do ciclo.
-    // ...
-    
+    if (header->compare(item,root->item) == 0){
+      return 1;
+    }
+    if (header->compare(item, root->item) > 0){
+      root = root->right;
+    }
+    else{
+      root = root->left;
+       
+    }
   }
-  return ...
+  return 0;
 }
 
 // Aplica a função function a cada item da árvore.
@@ -147,10 +170,10 @@ _treeTraverseINOrder(struct _BSTreeNode* root, void (*function)(void* p)) {
   // Corrija a função para que os nós sejam visitados por ordem crescente.
   // ...
   if (root == NULL) return;
+ _treeTraverseINOrder(root->left, function);
   function(root->item);
-  _treeTraverseINOrder(root->right, function);
-  _treeTraverseINOrder(root->left, function);
-  
+ _treeTraverseINOrder(root->right, function);
+   
 }
 
 // Aplica a função function a cada item da árvore.
@@ -192,8 +215,14 @@ int BSTreeAdd(BSTree* header, void* item) {
 
   // Complete a função fazendo a ancoragem do novo nó no ramo adequado.
   // ...
-  
-  
+  if(root == NULL){
+    header->root = newNode;
+  }
+  else if(cmp < 0){
+    prev->left = newNode;
+  }else{
+    prev->right = newNode;
+  }
   header->numNodes++;
   return 1;
 }
@@ -291,7 +320,7 @@ _getPointerToKthNode(struct _BSTreeNode* root, unsigned int k) {
   
   if (k < numNodesLeftTree) {
     return _getPointerToKthNode(root->left, k);
-  } else if (k < numNodesLeftTree) {
+  } else if (k > numNodesLeftTree) {
     return _getPointerToKthNode(root->right, k - numNodesLeftTree - 1);
   } else {  // (k == numNodesLeftTree)
     return root;
@@ -300,15 +329,18 @@ _getPointerToKthNode(struct _BSTreeNode* root, unsigned int k) {
 // Q: Admitindo que a árvore tem n nós e está equilibrada (balanced),
 // qual é a complexidade computacional da função getPointerToKthNode?
 // Justifique resumidamente como chegou ao resultado.
-// R: ...
+// R: Tem complexidade linear, a pesquisa de elementos exige fazer primeiramente duas comparações para decidir
+  // se a pesquisa segue pela árvore da direira ou da esquerda, à medida que se percorre a árvore faz-se mais 
+  // uma comparação até atingir o nó do elemento procurado.
 //
 // 
 // Explique como poderia evitar a chamada a _getNumNodes nesta função.
 // Q: O que seria preciso mudar na estrutura de dados?
-// R: ...
+// R: Como a árvore é balanceada poderámos associar a cada nó uma unvariante com o
+// respetivo valor de altura.
 //
 // Q: E que funções teriam de ser modificadas?
-// R: ...
+// R: BSTreeAdd e BSTreeRemove
 //
 
 
