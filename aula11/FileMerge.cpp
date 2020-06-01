@@ -1,5 +1,5 @@
-// NMEC: 
-// NOME: 
+// NMEC: 93091
+// NOME: Miguel José Ferreira Cabral
 //
 // João Manuel Rodrigues, AlgC, May 2020
 // Joaquim Madeira, AlgC, May 2020
@@ -54,22 +54,24 @@ int main(int argc, char* argv[]) {
    int numFiles = argc-1;
    
    // Create heap with capacity for one line buffer per file:
-   MinHeap* H = ...
+   MinHeap* H = MinHeapCreate(numFiles,comparator,printer);
    if (H == NULL) abort();
    
    for (int i = 0; i < numFiles; i++) {
       // Open a FileReader for each argument:
-      FileReader* fr = ...
+      FileReader* fr = FileReaderOpen(argv[i+1]);
       if (FileReaderError(fr)) { perror(fr->name); exit(1); }
       // Insert this file reader object into the Heap:
       //...
+      MinHeapInsert(H,fr);
    }
 
    while (numFiles > 0) {
       FileReader* fr;
       
       // 1a. Get the first file reader from the Heap and remove it:
-      fr = ...
+      fr = (FileReader*)MinHeapGetMin(H);
+      MinHeapRemoveMin(H);
       
       
       // 1b. Output the current line from that reader:
@@ -78,14 +80,16 @@ int main(int argc, char* argv[]) {
       free(line);                      // and free the buffer
       
       // 2a. Advance the reader to the next line:
-      int ok = ...
+      int ok = FileReaderNextLine(fr);
       
       if (ok) {         // On success:
          // 2b: Reinsert file reader into the Heap:
          //...
+         MinHeapInsert(H,fr);
       } else {          // On EOF or Error:
          // 2c: Close the file reader:
          //...
+         FileReaderClose(fr);
          numFiles--;    // Decrease number of open files
          if (FileReaderError(fr)) { perror(fr->name); exit(2); }
       }

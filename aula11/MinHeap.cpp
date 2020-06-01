@@ -1,5 +1,5 @@
-//NMEC: ...
-//NOME: ...
+//NMEC: 93091  
+//NOME: Miguel José Ferreira Cabral
 //
 // João Manuel Rodrigues, AlgC, May 2020
 // Joaquim Madeira, AlgC, May 2020
@@ -105,10 +105,10 @@ void MinHeapInsert(MinHeap* ph, void* item) {
       int p = _parent(n);
       
       // if item not less than _parent, then we've found the right spot!
-      if (...) break;
+      if (ph->compare(item,ph->array[p]) > 0) break;
       
       // otherwise, move up the item at node p to open up space for new item
-      ph->array[...] = ph->array[...];
+      ph->array[n] = ph->array[p];
       
       n = p;  // p is the new vacant spot
    }
@@ -127,14 +127,14 @@ void MinHeapRemoveMin(MinHeap* ph) {
       if (!(min < ph->size)) break;  // if no second _child, stop looking
    
       // if second _child is smaller, choose it
-      if (...)
-         min = ...
-   
+      if (ph->compare(ph->array[min],ph->array[_child(n,2)]) > 0){
+         min = _child(n,2);
+      }
       // if smallest _child is not smaller than last, stop looking
       if (!(ph->compare(ph->array[min], ph->array[ph->size]) < 0)) break;
    
       // move smallest _child down to fill empty _parent spot
-      ph->array[...] = ph->array[...];
+      ph->array[n] = ph->array[min];
       
       n = min;     // now, the smallest _child spot was just emptied!
    }
