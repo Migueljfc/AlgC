@@ -1,5 +1,5 @@
-//NMEC: ...
-//NOME: ...
+//NMEC: 93091  
+//NOME: Miguel José Ferreira Cabral
 //
 // João Manuel Rodrigues, AlgC, May 2020
 // Joaquim Madeira, AlgC, May 2020
